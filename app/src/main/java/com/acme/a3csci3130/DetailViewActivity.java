@@ -11,6 +11,9 @@ import android.widget.Toast;
 
 import com.google.firebase.database.FirebaseDatabase;
 
+/**
+ * Allows user to edit or delete the entry
+ */
 public class DetailViewActivity extends Activity {
 
     private EditText nameField, emailField, address, busType, province, busNum;
@@ -18,6 +21,11 @@ public class DetailViewActivity extends Activity {
     String id;
     Button updateButton, deleteButton;
     MyApplicationData appData = (MyApplicationData) getApplication();
+
+    /**
+     * Get bundles and calls methods for updating and deleting data
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         appData = ((MyApplicationData) getApplicationContext());
@@ -56,6 +64,11 @@ public class DetailViewActivity extends Activity {
             }
         });
     }
+
+    /**
+     * updates the Contact and passes it Firebase and navigates back to MainActivity.class
+     * @param v - view passed in
+     */
         public void updateContact(View v) {
 
         receivedPersonInfo.name = nameField.getText().toString();
@@ -71,6 +84,10 @@ public class DetailViewActivity extends Activity {
             startActivity(intent);
     }
 
+    /**
+     * Erases contact in Firebase and navigates back to MainActivity.java
+     * @param v - view passed in
+     */
     public void eraseContact(View v)
     {
         appData.firebaseReference.child(id).setValue(null);

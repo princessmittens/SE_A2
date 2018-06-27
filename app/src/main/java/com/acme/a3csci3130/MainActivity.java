@@ -11,12 +11,19 @@ import android.widget.TextView;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.FirebaseDatabase;
 
+/**
+ * Main Activity that shows the list view
+ */
 public class MainActivity extends Activity {
 
 
     private ListView contactListView;
     private FirebaseListAdapter<Contact> firebaseAdapter;
 
+    /**
+     * Creates a list view and retrieves data from Firebase
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +48,7 @@ public class MainActivity extends Activity {
                 contactName.setText(model.name);
             }
         };
+
         contactListView.setAdapter(firebaseAdapter);
         contactListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             // onItemClick method is called everytime a user clicks an item on the list
@@ -52,19 +60,24 @@ public class MainActivity extends Activity {
         });
     }
 
+    /**
+     * Navigates to CreateContactActivity
+     * @param v  - the view passed in
+     */
     public void createContactButton(View v)
     {
         Intent intent=new Intent(this, CreateContactAcitivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Navigates to DetailViewActivity
+     * @param person - created object that is passed to DetailViewActivity
+     */
     private void showDetailView(Contact person)
     {
         Intent intent = new Intent(this, DetailViewActivity.class);
         intent.putExtra("Contact", person);
         startActivity(intent);
     }
-
-
-
 }

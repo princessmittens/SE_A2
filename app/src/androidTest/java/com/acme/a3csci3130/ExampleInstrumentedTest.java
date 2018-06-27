@@ -15,7 +15,6 @@ import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.matcher.CursorMatchers.withRowString;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -26,6 +25,8 @@ import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.collection.IsMapContaining.hasEntry;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.*;
 
 /**
@@ -49,6 +50,8 @@ public class ExampleInstrumentedTest {
 
     @Test
     public void testCreate() {
+
+        //creates entry
         onView(withId(R.id.submitButton)).perform(click());
         onView(withId(R.id.name)).perform(typeText("FishRUS"), closeSoftKeyboard());
         onView(withId(R.id.num)).perform(typeText("123456789"), closeSoftKeyboard());
@@ -57,31 +60,40 @@ public class ExampleInstrumentedTest {
         onView(withId(R.id.province)).perform(typeText("NS"), closeSoftKeyboard());
         onView(withId(R.id.email)).perform(typeText("cats@catsalot.com"), closeSoftKeyboard());
         onView(withId(R.id.submitButton)).perform(click());
-//http://www.qaautomated.com/2016/01/testing-with-espresso-data-adapter.html
+
+        //http://www.qaautomated.com/2016/01/testing-with-espresso-data-adapter.html
+
+        //tests create
+        onData(anything()).inAdapterView(withId(R.id.listView)).atPosition(0).
+                check(matches(withText("FishRUS")));
+    }
+
+    @Test
+    public void testRead(){
+        //tests list view
         onData(anything()).inAdapterView(withId(R.id.listView)).atPosition(0).
                 check(matches(withText("FishRUS")));
     }
 
     @Test
     public void testUpdate() {
-  //     onData(withRowString(DB.COLUMN_FIRSTNAME, "Ivan")).perform(click());
-      onData(instanceOf(MainActivity.class)).atPosition(0).perform(click());
-    ///   onData(anything()).inAdapterView(withId(R.id.listView)).atPosition(0).perform(click());
-//        onView(withId(R.id.name)).perform(typeText("FishRUSCatsTEST"), closeSoftKeyboard());
-//        onView(withId(R.id.num)).perform(typeText("123456789"), closeSoftKeyboard());
-//        onView(withId(R.id.bustype)).perform(typeText("Fisher"), closeSoftKeyboard());
-//        onView(withId(R.id.address)).perform(typeText("123 Cat Avenue"), closeSoftKeyboard());
-//        onView(withId(R.id.province)).perform(typeText("NS"), closeSoftKeyboard());
-//        onView(withId(R.id.email)).perform(typeText("cats@catsmeow.com"), closeSoftKeyboard());
-//        onView(withId(R.id.updateButton)).perform(click());
+
+        //updates
+        onData(anything()).inAdapterView(withId(R.id.listView)).atPosition(0).perform(click());
+        onView(withId(R.id.name)).perform(typeText("UPDATE"), closeSoftKeyboard());
+        onView(withId(R.id.updateButton)).perform(click());
+
+        //checks
         onData(anything()).inAdapterView(withId(R.id.listView)).atPosition(0).
-                check(matches(withText("FishRUSCats")));
+                check(matches(withText("FishRUSUPDATE")));
     }
 
-//    @Test
-//    public void testCreate() {
-//        onView(withId(R.id.edit)).perform(typeText(badpass),closeSoftKeyboard());
-//        onView(withId(R.id.button)).perform(click());
-//        onView(withText("Invalid password, please try again.")).check(matches(withId(R.id.view)));
-//    }
+    @Test
+    public void testDelete() {
+        onData(anything()).inAdapterView(withId(R.id.listView)).atPosition(0).perform(click());
+        onView(withId(R.id.deleteButton)).perform(click());
+    }
+
+
+
 }
